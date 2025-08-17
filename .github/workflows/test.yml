@@ -2,11 +2,9 @@ name: Python Selenium Tests
 
 on:
   push:
-    branches:
-      - main
+    branches: ["*"]
   pull_request:
-    branches:
-      - main
+    branches: ["*"]
   workflow_dispatch:
 
 jobs:
@@ -15,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.10, 3.11]
+        python-version: '3.12'
 
     steps:
       - name: Checkout repository
