@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block 'content' %}
+    <h2>Müşteriler</h2>
+    <p>Bu sayfada müşteri bilgilerini görüntüleyebilirsiniz.</p>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Toplam Müşteri</h5>
+                    <p class="card-text">{{musteri_adet}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">Aktif Müşteriler</h5>
+                    <p class="card-text">{{Aktif_musteri}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-bg-danger">
+                <div class="card-body">
+                    <h5 class="card-title">Pasif Müşteriler</h5>
+                    <p class="card-text">{{pasif_musteri}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Müşteri No</th>
+                <th>Ad Soyad</th>
+                <th>Telefon</th>
+                <th>Email</th>
+                <th>Durum</th>
+                <th>İncelle</th>
+                <th>Sil</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in deger %}
+            <tr>
+                <td>{{a.id}}</td>
+                <td>{{a.name}}</td>
+                <td>{{a.telefon}}</td>
+                <td>{{a.mail}}</td>
+                {% if a.durum %}
+                    <td><span class="badge bg-success">Aktif</span></td>
+                    <td><span class="badge bg-success"><a href="{% url "musteri_detay" a.id %}" style='color:white;'>İncele</a></span></td>
+                {% else %}
+                    <td><span class="badge bg-danger">Pasif</span></td>
+                    <td><span class="badge bg-danger"><a href="{% url "musteri_detay" a.id %}" style='color:white;'>İncele</a></span></td>
+
+                {% endif %}
+                <td><span class="badge bg-success"><a href="{% url "musteri-sil" a.id %}" style='color:white;'>Sil</a></span></td>
+
+
+            
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock 'content' %}

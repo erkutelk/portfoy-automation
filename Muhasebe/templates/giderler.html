@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% block 'content' %}
+    <h2>Giderler</h2>
+    <p>Bu sayfada giderlerinizi görüntüleyebilirsiniz.</p>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-bg-danger">
+                <div class="card-body">
+                    <h5 class="card-title">Toplam Gider</h5>
+                    <p class="card-text">{{toplam_gider}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-bg-secondary">
+                <div class="card-body">
+                    <h5 class="card-title">Aylık Gider</h5>
+                    <p class="card-text">{{aylık_gider}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-bg-warning">
+                <div class="card-body">
+                    <h5 class="card-title">Bekleyen Ödemeler</h5>
+                    <p class="card-text">{{bekleyen_odemeler}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <label for="filterInput">Filtrele:</label>
+        <input type="text" id="filterInput" class="form-control" placeholder="Açıklama veya kategoriye göre filtrele">
+    </div>
+
+    <table class="table table-striped mt-2" id="giderTable">
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>Açıklama</th>
+                <th>Tutar</th>
+                <th>Kategori</th>
+                <th>Durum</th>
+                <th>Detay</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in isim %}
+            <tr>
+                <td>{{a.tarih}}</td>
+                <td>{{a.gider_aciklama}}</td>
+                <td>{{a.gider_tutar}}</td>
+                <td>{{a.kategori}}</td>
+                {% if a.gider_durum %}
+                    <td><span class="badge bg-success">Tamamlandı</span></td>
+                    <td><span class="badge bg-success"><a href="{% url "gider_detay" a.id %}" style='color:white;'>İncele</a></span></td>
+                {% else %}
+                    <td><span class="badge bg-danger">Tamamlanamadı</span></td>
+                    <td><span class="badge bg-danger"><a href="{% url "gider_detay" a.id %}" style='color:white;'>İncele</a></span></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterInput = document.getElementById('filterInput');
+            const table = document.getElementById('giderTable');
+            const rows = table.getElementsByTagName('tr');
+
+            filterInput.addEventListener('keyup', function() {
+                const filterValue = filterInput.value.toLowerCase();
+
+                for (let i = 1; i < rows.length; i++) { // Başlık satırını atla
+                    const row = rows[i];
+                    const cells = row.getElementsByTagName('td');
+                    let found = false;
+
+                    for (let j = 0; j < cells.length; j++) {
+                        const cellText = cells[j].textContent.toLowerCase();
+                        if (cellText.includes(filterValue)) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock 'content' %}

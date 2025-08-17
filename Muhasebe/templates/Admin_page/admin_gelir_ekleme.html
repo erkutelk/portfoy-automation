@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% load humanize %}
+{% block 'content' %}
+<form action="{% url 'gelir_ekle' %}" method="POST" novalidate enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="mb-3 {% if field.errors %}invalid{% endif %}">
+            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            <div class="kutu">{{ field }}</div>
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary w-100">Kaydet</button>
+</form>
+{% endblock 'content' %}

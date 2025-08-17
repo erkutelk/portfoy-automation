@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% load humanize %}
+
+{% block 'content' %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Finansal Raporlar</h2>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white shadow-lg">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Aylık Gelir</h5>
+                    <p class="card-text fs-4 fw-bold">₺{{ aylik_gelir|floatformat:2|intcomma }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white shadow-lg">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Aylık Kar</h5>
+                    <p class="card-text fs-4 fw-bold">₺{{ aylik_kar|floatformat:2|intcomma }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-danger text-white shadow-lg">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Aylık Gider</h5>
+                    <p class="card-text fs-4 fw-bold">₺{{ aylik_gider|floatformat:2|intcomma }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <label for="ayFiltre" class="form-label mb-0">Ayı Filtrele:</label>
+        <select id="ayFiltre" class="form-select w-auto">
+            <option value="">Tüm Aylar</option>
+            {% for veri in aylik_veriler %}
+                <option value="{{ veri.ay }}">{{ veri.ay }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover" id="raporTablosu">
+            <thead class="table-light">
+                <tr class="text-center">
+                    <th>Ay</th>
+                    <th class="text-primary">Gelir (₺)</th>
+                    <th class="text-danger">Gider (₺)</th>
+                    <th class="text-success">Kâr (₺)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for veri in aylik_veriler %}
+                <tr class="text-center align-middle" data-ay="{{ veri.ay }}">
+                    <td class="fw-bold bg-light">{{ veri.ay }}</td>
+                    <td class="text-primary bg-white">{{ veri.gelir|floatformat:2|intcomma }}</td>
+                    <td class="text-danger bg-white">{{ veri.gider|floatformat:2|intcomma }}</td>
+                    <td class="text-success bg-white">{{ veri.kar|floatformat:2|intcomma }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row text-center mt-4">
+        <div class="col-md-4">
+            <div class="alert alert-primary fw-bold" role="alert">
+                Yıllık Toplam Gelir: ₺{{ toplam_gelir|floatformat:2|intcomma }}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="alert alert-danger fw-bold" role="alert">
+                Yıllık Toplam Gider: ₺ {{ toplam_gider|floatformat:2|intcomma }}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="alert alert-success fw-bold" role="alert">
+                Yıllık Toplam Kâr: ₺{{ toplam_kar|floatformat:2|intcomma }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ayFiltre = document.getElementById('ayFiltre');
+        const raporTablosu = document.getElementById('raporTablosu').getElementsByTagName('tbody')[0];
+        const raporSatirlari = raporTablosu.getElementsByTagName('tr');
+
+        ayFiltre.addEventListener('change', function() {
+            const secilenAy = ayFiltre.value;
+
+            for (let satir of raporSatirlari) {
+                const satirAy = satir.getAttribute('data-ay');
+                if (secilenAy === '' || secilenAy === satirAy) {
+                    satir.style.display = '';
+                } else {
+                    satir.style.display = 'none';
+                }
+            }
+        });
+    });
+</script>
+{% endblock 'content' %}

@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block 'headers' %}💻|Gelirler{% endblock 'headers' %}
+{% load humanize %}
+
+{% block 'content' %}
+    <h2>Gelirler</h2>
+    <p>Bu sayfada gelirlerinizi görüntüleyebilirsiniz.</p>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">Toplam Gelir</h5>
+                    <p class="card-text">{{toplam|floatformat:2|intcomma}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Aylık Gelir</h5>
+                    <p class="card-text">{{tarih|floatformat:2|intcomma}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-bg-warning">
+                <div class="card-body">
+                    <h5 class="card-title">Bekleyen Ödemeler</h5>
+                    <p class="card-text">{{bekleyen_odemeler|floatformat:2|intcomma}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>Kategori</th>
+                <th>Tutar</th>
+                <th>Durum</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in isim %}
+            <tr>
+                <td>{{a.tarih}}</td>
+                <td>{{a.kategori}}</td>
+                <td>{{a.gelir}}</td>
+                <td>{{a.gelir_aciklama}}</td>
+                {% if a.Durum %}
+                    <td><span class="badge bg-success">Tamamlandı</span></td>
+                    <td><span class="badge bg-success"><a href="{% url "gelirler_detail" a.id %}"style='color:white;'>İncelle</a></span></td>
+                    
+                {% else %}
+                
+                <td><span class="badge bg-danger">Gelmedi</span></td>
+                <td><span class="badge bg-danger"><a href="{% url "gelirler_detail" a.id %}" style='color:white;'>İncelle</a></span></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock 'content' %}
