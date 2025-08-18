@@ -1,5 +1,5 @@
 # Automation Tests Portfoy
-**This document is in English. For the Turkish version, please click [README_TR.md](README_tr.md).**
+**This document is in English. For the Turkish version, please click [README_TR.md](README_TR.md).**
 
 This project contains web automation tests implemented using **Python** and the **pytest** framework. The tests cover functional testing for income, expense, invoices, and customer pages.
 
